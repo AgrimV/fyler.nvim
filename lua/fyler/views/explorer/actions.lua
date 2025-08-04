@@ -53,7 +53,10 @@ function M.n_select_tab(view)
     if not key then return end
 
     local entry = store.get_entry(key)
-    if not entry:is_dir() then
+    if entry:is_dir() then
+      view.fs_root:find(key):toggle()
+      api.nvim_exec_autocmds("User", { pattern = "RefreshView" })
+    else
       local recent_win = cache.get_entry("recent_win")
 
       if recent_win and api.nvim_win_is_valid(recent_win) then
